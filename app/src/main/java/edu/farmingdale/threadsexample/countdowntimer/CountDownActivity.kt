@@ -1,5 +1,8 @@
 package edu.farmingdale.threadsexample.countdowntimer
-
+//Himal Shrestha
+//Class: BCS 371 - Mobile Application Development
+//Prof Alrajab
+// Week 11 - Threads Example
 import android.Manifest
 import android.content.pm.PackageManager
 import android.os.Build
@@ -23,61 +26,78 @@ import edu.farmingdale.threadsexample.ui.theme.ThreadsExampleTheme
 
 class CountDownActivity : ComponentActivity() {
 
+    // ViewModel instance to manage the timer's state
     private val timerViewModel = TimerViewModel()
 
+    // Launcher for permission request to post notifications (for Android 13 and above)
     private val permissionRequestLauncher =
         registerForActivityResult(ActivityResultContracts.RequestPermission()) { isGranted ->
+            // Log message based on whether the permission was granted or not
             val message = if (isGranted) "Permission granted" else "Permission NOT granted"
             Log.i("MainActivity", message)
         }
 
+    // Called when the activity is created
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        enableEdgeToEdge()
+        enableEdgeToEdge()  // Enable edge-to-edge display for the app
+
+        // Set the content of the activity to the timer UI
         setContent {
             ThreadsExampleTheme(dynamicColor = false) {
                 Surface(
-                    modifier = Modifier.fillMaxSize(),
-                    color = MaterialTheme.colorScheme.background
+                    modifier = Modifier.fillMaxSize(),  // Fill the entire screen
+                    color = MaterialTheme.colorScheme.background  // Set background color
                 ) {
-                    TimerScreen(timerViewModel = timerViewModel)
+                    TimerScreen(timerViewModel = timerViewModel)  // Display the TimerScreen
                 }
             }
         }
 
-        // Only need permission to post notifications on Tiramisu and above
+        // For Android 13 and above, check if the app has permission to post notifications
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-            if (ActivityCompat.checkSelfPermission(this,
-                    Manifest.permission.POST_NOTIFICATIONS) == PackageManager.PERMISSION_DENIED) {
+            if (ActivityCompat.checkSelfPermission(
+                    this, Manifest.permission.POST_NOTIFICATIONS
+                ) == PackageManager.PERMISSION_DENIED
+            ) {
+                // Request the permission if not already granted
                 permissionRequestLauncher.launch(Manifest.permission.POST_NOTIFICATIONS)
             }
         }
     }
 
+    // Called when the activity is stopped (e.g., when the app goes to the background)
     override fun onStop() {
         super.onStop()
 
-        // Start TimerWorker if the timer is running
+        // If the timer is running, start a background worker to manage the timer state
         if (timerViewModel.isRunning) {
+            // For Android 13 and above, check if permission is granted before starting the worker
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-                if (ActivityCompat.checkSelfPermission(this,
-                        Manifest.permission.POST_NOTIFICATIONS) == PackageManager.PERMISSION_GRANTED) {
+                if (ActivityCompat.checkSelfPermission(
+                        this, Manifest.permission.POST_NOTIFICATIONS
+                    ) == PackageManager.PERMISSION_GRANTED
+                ) {
+                    // Start the worker with the remaining time
                     startWorker(timerViewModel.remainingMillis)
                 }
             } else {
+                // For older versions, directly start the worker
                 startWorker(timerViewModel.remainingMillis)
             }
         }
     }
 
+    // Start a background worker to handle the timer's countdown
     private fun startWorker(millisRemain: Long) {
-        val timerWorkRequest: WorkRequest = OneTimeWorkRequestBuilder<TimerWorker>()
-            .setInputData(
-                `workDataOf`(
-                    KEY_MILLIS_REMAINING.toString() to millisRemain
-                )
-            ).build()
+        // Create a one-time work request to start the timer worker
+        val timerWorkRequest: WorkRequest = OneTimeWorkRequestBuilder<TimerWorker>().setInputData(
+            `workDataOf`(
+                KEY_MILLIS_REMAINING.toString() to millisRemain  // Pass remaining time to the worker
+            )
+        ).build()
 
+        // Enqueue the work request to the WorkManager to run in the background
         WorkManager.getInstance(applicationContext).enqueue(timerWorkRequest)
     }
 }
