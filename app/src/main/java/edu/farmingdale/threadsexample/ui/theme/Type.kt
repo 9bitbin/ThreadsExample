@@ -1,5 +1,8 @@
 package edu.farmingdale.threadsexample.ui.theme
-
+//Himal Shrestha
+//Class: BCS 371 - Mobile Application Development
+//Prof Alrajab
+// Week 11 - Threads Example
 import androidx.compose.material3.Typography
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontFamily

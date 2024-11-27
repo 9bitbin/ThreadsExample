@@ -1,8 +1,11 @@
 package edu.farmingdale.threadsexample.ui.theme
-
+//Himal Shrestha
+//Class: BCS 371 - Mobile Application Development
+//Prof Alrajab
+// Week 11 - Threads Example
 import androidx.compose.ui.graphics.Color
 
-val Purple80 = Color(0xFFFFBCC9)
+val Red80 = Color(0xFFEA4162)
 val PurpleGrey80 = Color(0xFFCCC2DC)
 val Pink80 = Color(0xFFEFB8C8)
 

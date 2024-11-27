@@ -65,6 +65,6 @@ fun Greeting(name: String, modifier: Modifier = Modifier) {
 // ToDo 6: Add a button to rest the timer
 // completed: reset button has been made and implemented
 // ToDo 7: Play a sound when the timer reaches 0
-// incomplete
+// incomplete: I was not able to get he onTimerFinished to work i kept ketting errors for R and start
 // ToDo 8: During the last 10 seconds, make the text red and bold
 // completed
