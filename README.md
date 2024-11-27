@@ -49,9 +49,3 @@ This project implements a countdown timer with an alarm sound feature, built usi
 - Android Studio 💻
 - Kotlin 1.7+ (or compatible) 📝
 - Android SDK (API level 21 or higher) 📱
-
-## Getting Started 🚀
-
-1. Clone this repository:
-   ```bash
-   git clone https://github.com/yourusername/countdown-timer-app.git
