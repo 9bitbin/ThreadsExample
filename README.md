@@ -1,5 +1,9 @@
 # Countdown Timer with Alarm Sound ⏲️🔔
 
+# Himal Shrestha 
+- Mobile Application Development
+- 7/8 todos done
+
 ## Overview
 This project implements a countdown timer with an alarm sound feature, built using Android Jetpack Compose and Kotlin. The app allows users to set a countdown timer based on hours, minutes, and seconds, and it plays an alarm sound when the timer reaches zero.
 
